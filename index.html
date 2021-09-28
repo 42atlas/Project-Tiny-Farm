@@ -7,6 +7,10 @@
   <title>Project Tiny Farm</title>
 
   <!-- VENDORS -->
+  
+    <!-- RPGUI by RonenNess -->
+    <link rel="stylesheet" href="dist/rpgui.css">
+    <script src="dist/rpgui.js"></script>
 
     <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,16 +18,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <!-- STYLES  -->
-  <link rel="stylesheet" href="styles/main.css"></link>
+  <link rel="stylesheet" href="styles/main.css">
   
   <!-- SCRIPTS -->
   <script src="scripts/app.js"></script>
 
 </head>
 <body>
-  <header>
-      <h1>Welcome to the Tiny Farm Game!</h1>
-  </header>
+  <div id="container" class="rpgui-content">
+    <header>
+        <h1>Welcome to the Tiny Farm Game!</h1>
+    </header>
+		<!-- rpgui goes here -->
+    <main>
+      <div id="outside" class="rpgui-container framed">
+        
+          <div id="inside" class="rpgui-container framed-golden-2">
+            <section>      
+            <img src="" id="farmBg">
+            <article>
+              <img src="" id="animal">
+            </article>
+            <article id="meters">
+              <p class="meterNames">Hunger:</p>
+              <div id="hunger" class="rpgui-progress red"></div>
 
+              <p class="meterNames">Happiness:</p>
+              <div id="happiness" class="rpgui-progress green"></div>
+
+              <p class="meterNames">Sleepiness:</p>
+              <div id="sleepiness" class="rpgui-progress"></div>
+            </article>
+          </section>
+
+          </div>
+      </div>
+      <div id="content" class="rpgui-container framed-grey">
+        <p id="messages">Insert text here</p>
+      </div>
+    </main>
+    <footer>
+      <div id="buttonDiv" class="rpgui-container framed-golden">
+        <button id="feed" class="buttons rpgui-button golden">Feed</button>
+        <button id="play" class="buttons rpgui-button golden">Play</button>
+        <button id="sleep" class="buttons rpgui-button golden">Sleep</button>
+      </div>
+    </footer>
+
+    <h6>&copy; Kathy Wu - 2021</h6>
+  </div>
 </body>
 </html>

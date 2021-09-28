@@ -8,6 +8,9 @@
 
   <!-- VENDORS -->
   
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
     <!-- RPGUI by RonenNess -->
     <link rel="stylesheet" href="dist/rpgui.css">
     <script src="dist/rpgui.js"></script>
@@ -17,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-  <!-- STYLES  -->
+  <!-- STYLES -->
   <link rel="stylesheet" href="styles/main.css">
   
   <!-- SCRIPTS -->
@@ -36,32 +39,32 @@
           <div id="inside" class="rpgui-container framed-golden-2">
             <section>      
             <img src="" id="farmBg">
-            <article>
-              <img src="" id="animal">
-            </article>
             <article id="meters">
-              <p class="meterNames">Hunger:</p>
+              <h4 id="hungerLabel" class="meterNames">Hunger:</h4>
               <div id="hunger" class="rpgui-progress red"></div>
 
-              <p class="meterNames">Happiness:</p>
+              <h4 class="meterNames">Happiness:</h4>
               <div id="happiness" class="rpgui-progress green"></div>
 
-              <p class="meterNames">Sleepiness:</p>
+              <h4 class="meterNames">Sleepiness:</h4>
               <div id="sleepiness" class="rpgui-progress"></div>
             </article>
+            <article id="animalContainer">
+              <img src="Images/Chicken/Chicken/ChickenIdle.gif" id="animal">
+            </article>
+            <div id="content" class="rpgui-container framed-grey">
+              <p id="messages">Insert text here</p>
+            </div>
           </section>
 
           </div>
       </div>
-      <div id="content" class="rpgui-container framed-grey">
-        <p id="messages">Insert text here</p>
-      </div>
     </main>
     <footer>
       <div id="buttonDiv" class="rpgui-container framed-golden">
-        <button id="feed" class="buttons rpgui-button golden">Feed</button>
-        <button id="play" class="buttons rpgui-button golden">Play</button>
-        <button id="sleep" class="buttons rpgui-button golden">Sleep</button>
+        <button id="feed" class="buttons rpgui-button golden"><p>Feed</p></button>
+        <button id="play" class="buttons rpgui-button golden"><p>Play</p></button>
+        <button id="sleep" class="buttons rpgui-button golden"><p>Sleep</p></button>
       </div>
     </footer>
 

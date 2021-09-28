@@ -4,7 +4,7 @@
 body {
   margin: 0 auto;
   padding: 0;
-  border: 2px solid red; /* to see borders */
+  /* border: 2px solid red; to see borders */
   width: 100vh;
   height: 100vh;
   display: flex;
@@ -33,7 +33,7 @@ h1 {
   height: 1000px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-content: center;
   align-items: center;
 }
@@ -48,6 +48,11 @@ h1 {
   width: 675px;
   height: 540px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  align-content: flex-end;
 }
 
 #content {
@@ -58,28 +63,58 @@ h1 {
 #meters {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: flex-end;
   flex-wrap: wrap;
+  align-content: flex-end;
 }
 
-#meterNames {
-  margin: 0px 100px;
-  width: 675px;
+.meterNames {
+  margin: 5px 30px 5px 45px;
+  text-align: left;
 }
 
+#hungerLabel {
+  margin: 5px 75px 5px 5px;
+}
 
 #hunger {
-  width: 30%;
+  flex-basis: 33%;
+  align-self: stretch;
   order: 4;
 }
 
 #happiness {
-  width: 30%;
+  flex-basis: 33%;
+  align-self: stretch;
   order: 5;
 }
 
 #sleepiness {
-  width: 30%;
+  flex-basis: 33%;
+  align-self: stretch;
   order: 6;
+}
+
+#animalContainer {
+  width: 600px;
+  height: 300px;
+  padding: 20px 0px 10px 0px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#animal {
+  width: 224px;
+  height: 224px;
+}
+
+#buttonDiv {
+  width: 560px;
+}
+
+.buttons {
+  margin: 0px 10px 0px 10px;
 }

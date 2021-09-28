@@ -294,7 +294,6 @@ inside your html file.
   border-image-slice: 8 8 8 8;
   border-image-width: 18px;
   border-width: 15px;
-  padding: 12px;
   /* internal border */
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -676,7 +675,7 @@ ul.rpgui-list-imp {
   text-align: center;
   /* padding */
   padding: 0 0 0 0;
-  margin: 7px 7px 17px 7px; }
+}
 
 /* default p */
 .rpgui-content p {

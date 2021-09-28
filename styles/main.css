@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0 auto;
+  padding: 0;
+  border: 2px solid red; /* to see borders */
+  width: 100vh;
+  height: 100vh;
+}
+header {
+  margin: 0 auto;
+  padding: 10px;
+}
+h1 {
+  border: 2px solid red; /* to see borders */
+  border-radius: 10px;
+  padding: 25px 40px 10px 40px;
+  margin: 0 auto;
+  background-color:wheat;
+  color:indianred;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 48px;
+  text-align: center;
+  width: 950px;
+  height: 150px;
+}

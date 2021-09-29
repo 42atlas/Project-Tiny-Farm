@@ -31,14 +31,6 @@ console.log(
 /* === Variables === */
 
 
-
-
-
-
-
-
-
-
 const game = {
   timeAlive: 0,
   barn: 0,
@@ -55,31 +47,63 @@ const game = {
 
     const $title = $(`<h2 id="title"><img src="Images/title/barn_animal.gif" id="house">Tiny Farm</h2>`);
     $startScreen.append($title);
-
-    const $start = $(`<button id="start"><p>Start your farm!</p></button>`);
+    const $start = $(`<button id="start" class="rpgui-button" type="button"><p>Start your farm!</p></button>`);
     $startScreen.append($start);
+    
+    /* --- Event Listener --- */
+    $("#start").on("click", game.setUpMenu);
   },
 
   setUpMenu() {
     const $inside = $("#inside");
+    const $startScreen = $("#startScreen");
+    $startScreen.remove();
+  
     const $menuScreen = $(`<section id="menuScreen"></section>`);
     $inside.append($menuScreen);
     
-    const $name = $(`<label>Name your animal: </label><input type="text" id="name">`);
-    $menuScreen.append($name);
+    const $choose= $(`<h3>Choose your animal: </h4>`);
+    $menuScreen.append($choose);
+
+    const $animalsDiv = $(`<article id="animalsDiv"></article>`);
+    $menuScreen.append($animalsDiv);
+
+    //Animals
+    const $goatkid = $(`<img src="Images/title/goat_kid/goat_halfbrown_walk_left.gif" class="animals"  id="goatkid">`);
+    $animalsDiv.append($goatkid);
+    const $lamb = $(`<img src="Images/title/lamb/sheep_walk_left.gif" class="animals"  id="lamb">`);
+    $animalsDiv.append($lamb);
+    const $piglet = $(`<img src="Images/title/piglet/pig_walk_left.gif" class="animals" id="piglet">`);
+    $animalsDiv.append($piglet);
+    const $cow = $(`<img src="Images/title/calf_white/babycow_walk_left.gif" class="animals" id="cow">`);
+    $animalsDiv.append($cow);
+    const $chick = $(`<img src="Images/title/chick_white/babychick_walk_left.gif" class="animals"  id="chick">`);
+    $animalsDiv.append($chick);
+    const $bunny = $(`<img src="Images/title/bunny_white/babybunny_walk_left.gif" class="animals"  id="bunny">`);
+    $animalsDiv.append($bunny);
+    const $nameDiv = $(`<article id="nameDiv"></article>`);
+    $menuScreen.append($nameDiv);
+
+    //Name and confirm
+    const $name = $(`<h3>Give it a name: </h3><input type="text" id="name">`);
+    $nameDiv.append($name);
+    const $confirm = $(`<button id="confirm" class="rpgui-button" type="button"><p>OK</p></button>`);
+    $nameDiv.append($confirm);
+   
+    /* --- Event Listener --- */
+    $("#confirm").on("click", game.setUpGame);
   },
 
   setUpGame() {
     const $inside = $("#inside");
+    const $menuScreen = $("#menuScreen");
+    $menuScreen.remove();
+
     const $gameScreen = $(`<section id="gameScreen"></section>`);
     $inside.append($gameScreen);
 
-    // Farm background
-    const $farmBg = $(`<img src="" id="farmBg">`);
-    $gameScreen.append($farmBg);
-
     // Meters
-    const $meters = $(`#meters`);
+    const $meters = $("#meters");
     $meters.show();
 
     // Animal
@@ -107,6 +131,13 @@ const game = {
     $buttonDiv.append($cuddle);
     const $sleep = $(`<button id="sleep" class="buttons rpgui-button golden"><p>Sleep</p></button>`);
     $buttonDiv.append($sleep);
+
+    /* --- Event Listeners --- */
+
+    $feed.on("click");
+    $cuddle.on("click");
+    $sleep.on("click");
+
   },
 
   resetGame() {
@@ -164,14 +195,6 @@ const chicken = new Animal("name", randomizeColor());
 
 $(window).on("load", game.hideMeters);
 
-$(window).on("load", game.setUpMenu);
-
-$("#start").on("click", sayHello);
-
-$("title").on("click", sayHello);
-
-$("#feed").on("click", sayHello);
-
-$("#animal").on("click", sayHello);
+$(window).on("load", game.setUpStart);
 
 $("h6").on("click", sayHello);

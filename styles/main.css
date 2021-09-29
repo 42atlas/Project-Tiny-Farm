@@ -6,6 +6,7 @@
   --primary: rgb(210, 125, 44);
   --accent: rgb(218, 212, 94);
   --secondary: rgba(133, 76, 48, 0.5);
+  --dark: rgb(77, 74, 78);
 }
 
 body {
@@ -100,11 +101,47 @@ h1 {
 }
 #start {
   background-color: var(--accent);
-  padding: 5px 15px;
-  border-radius: 25px;
+  width: 300px;
+  height: 80px;
+  border-radius: 2px;
+}
+#animalsDiv {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.animals {
+  height: 138px;
+  flex-basis: 138px;
+  margin: 20px 20px 10px 30px;
+  padding: 0px 10px 20px 10px;
+}
+.animals:hover{
+  border: 3px solid var(--accent);
+  border-radius: 20px;
+  box-shadow: 2px 4px rgb(41, 41, 41);
+  transform: scale(1.3);
 }
 
 
+#nameDiv {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  margin-top: 10px;
+}
+
+#name {
+  flex-basis: 400px;
+  padding: 5px;
+  margin: 10px 20px;
+}
 
 #meters {
   display: flex;
@@ -162,7 +199,7 @@ h1 {
 }
 
 .buttons {
-  margin: 0px 5px 0px 10px;
+  margin: 0px 15px 0px 10px;
 }
 
 #messages {

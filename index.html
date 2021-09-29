@@ -20,11 +20,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
   <!-- STYLES -->
   <link rel="stylesheet" href="styles/main.css">
   
   <!-- SCRIPTS -->
-  <script src="scripts/app.js"></script>
+  <script src="scripts/app.js" defer></script>
 
 </head>
 <body>
@@ -37,8 +40,6 @@
       <div id="outside" class="rpgui-container framed">
         
           <div id="inside" class="rpgui-container framed-golden-2">
-            <section>      
-            <img src="" id="farmBg">
             <article id="meters">
               <h4 id="hungerLabel" class="meterNames">Hunger:</h4>
               <div id="hunger" class="rpgui-progress red"></div>
@@ -49,22 +50,13 @@
               <h4 class="meterNames">Sleepiness:</h4>
               <div id="sleepiness" class="rpgui-progress"></div>
             </article>
-            <article id="animalContainer">
-              <img src="Images/Chicken/Chicken/ChickenIdle.gif" id="animal">
-            </article>
-            <div id="content" class="rpgui-container framed-grey">
-              <p id="messages">Insert text here</p>
-            </div>
-          </section>
 
           </div>
       </div>
     </main>
     <footer>
       <div id="buttonDiv" class="rpgui-container framed-golden">
-        <button id="feed" class="buttons rpgui-button golden"><p>Feed</p></button>
-        <button id="play" class="buttons rpgui-button golden"><p>Play</p></button>
-        <button id="sleep" class="buttons rpgui-button golden"><p>Sleep</p></button>
+
       </div>
     </footer>
 

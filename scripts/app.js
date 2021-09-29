@@ -43,14 +43,30 @@ const game = {
   timeAlive: 0,
   barn: 0,
 
+  hideMeters() {
+    const $meters = $(`#meters`);
+    $meters.hide();
+  },
+
   setUpStart() {
     const $inside = $("#inside");
     const $startScreen = $(`<section id="startScreen"></section>`);
     $inside.append($startScreen);
-    
-    const $meters = $(`#meters`);
-    $meters.hide();
 
+    const $title = $(`<h2 id="title"><img src="Images/title/barn_animal.gif" id="house">Tiny Farm</h2>`);
+    $startScreen.append($title);
+
+    const $start = $(`<button id="start"><p>Start your farm!</p></button>`);
+    $startScreen.append($start);
+  },
+
+  setUpMenu() {
+    const $inside = $("#inside");
+    const $menuScreen = $(`<section id="menuScreen"></section>`);
+    $inside.append($menuScreen);
+    
+    const $name = $(`<label>Name your animal: </label><input type="text" id="name">`);
+    $menuScreen.append($name);
   },
 
   setUpGame() {
@@ -91,8 +107,6 @@ const game = {
     $buttonDiv.append($cuddle);
     const $sleep = $(`<button id="sleep" class="buttons rpgui-button golden"><p>Sleep</p></button>`);
     $buttonDiv.append($sleep);
-    
-
   },
 
   resetGame() {
@@ -146,8 +160,18 @@ const chicken = new Animal("name", randomizeColor());
 
 /* === Event Listeners === */
 
+
+
+$(window).on("load", game.hideMeters);
+
+$(window).on("load", game.setUpMenu);
+
+$("#start").on("click", sayHello);
+
+$("title").on("click", sayHello);
+
 $("#feed").on("click", sayHello);
 
 $("#animal").on("click", sayHello);
 
-$(window).on("load", game.setUpStart);
+$("h6").on("click", sayHello);

@@ -1,8 +1,15 @@
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --primary: rgb(210, 125, 44);
+  --accent: rgb(218, 212, 94);
+  --secondary: rgba(133, 76, 48, 0.5);
+}
+
 body {
-  margin: 0 auto;
+  margin: 30px auto;
   padding: 0;
   width: 100vh;
   height: 100vh;
@@ -18,7 +25,6 @@ h1 {
   border-radius: 10px;
   padding: 15px;
   background-color:wheat;
-  color:indianred;
   font-family: 'Press Start 2P', cursive;
   font-size: 48px;
   text-align: center;
@@ -67,6 +73,38 @@ h1 {
   height: 115px;
   padding: 10px 10px;
 }
+
+#startScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#title {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  margin: 30px;
+  height: 350px;
+  width: 350px;
+  background-color: var(--secondary);
+  padding: 20px;
+  border-radius: 200px;
+}
+#house {
+  margin: 0px;
+  width: 204px;
+  height: 231px;
+  align-self: center;
+}
+#start {
+  background-color: var(--accent);
+  padding: 5px 15px;
+  border-radius: 25px;
+}
+
+
 
 #meters {
   display: flex;

@@ -32,13 +32,18 @@ console.log(
 
 
 const game = {
-  timeAlive: 0,
+  /* --- Game Values --- */
+  aliveTimer: null,
+  hungerTimer: null,
+  happinessTimer: null,
+  sleepinessTimer: null,
+  time: 0,
   barn: 0,
   animalType: null,
   name: null,
   animal: null,
 
-
+  /* --- Game Logic --- */
   hideMeters() {
     const $meters = $(`#meters`);
     $meters.hide();
@@ -122,13 +127,13 @@ const game = {
       console.log(type);
       
       if (type === "chicken") {
-        const animal = new Chicken(animalName, randomizeColor);
+        const animal = new Chicken(animalName, randomizeColor());
         return game.animal = animal;
       } else if (type === "bunny") {
-        const animal = new Bunny(animalName, randomizeColor);
+        const animal = new Bunny(animalName, randomizeColor());
         return game.animal = animal;
       } else if (type === "cow") {
-        const animal = new Cow(animalName, randomizeColor);
+        const animal = new Cow(animalName, randomizeColor());
         return game.animal = animal;
       } else if (type === "pig") {
         const animal = new Pig(animalName, "light");
@@ -172,6 +177,7 @@ const game = {
 
     const $animalContainer = $(`<article id="animalContainer"></article>`);
     $gameScreen.append($animalContainer);
+
     const $animalImage = $(`<img src="" id="animal">`);
     $animalContainer.append($animalImage);
 
@@ -182,14 +188,51 @@ const game = {
 
     // Message box
     const $content = $(`<div id="content" class="rpgui-container framed-grey">
-                        <p id="messages">Insert text here </p>
+                        <p id="messages"></p>
                         </div>`);
     $gameScreen.append($content);
+
     
-    const $timeAlive = $(`<h5 id="timeAlive">Time alive: </h5>`);
+
+    const $messages = $("#messages");
+    $messages.text(`${game.animal.name} is currently sleeping. Maybe doing something will wake ${game.animal.name} up?`);
+
+    //TODO Metrics to update
+    const $timeAlive = $(`<h5 id="timeAlive">Time alive: ${game.time}:00 </h5>`);
     $("#content").append($timeAlive);
-    const $barn = $(`<h5 id="barn">Barn: </h5>`);
+    const $barn = $(`<h5 id="barn">Barn: ${game.barn} </h5>`);
     $("#content").append($barn);
+
+    
+    const startAliveTimer = function startAliveTimer() {
+      game.aliveTimer = setInterval(incrementTime, 1000);
+    };
+    
+    const incrementTime = function incrementTime() {
+      game.time += 1;
+      console.log(animal.age);
+      animal.age += 0.02;
+      updateAge();
+
+      let m = Math.floor(game.time/ 60);
+      let s = Math.floor(game.time % 60 % 60);
+      if (s < 10) {
+        $timeAlive.text(`Time alive: ${m}:0${s}`);
+      } else {
+        $timeAlive.text(`Time alive: ${m}:${s}`);
+      }
+    };
+
+    startAliveTimer();
+
+    const updateAge = function updateAge() {
+      if (animal.age === 6) {
+        $messages.text(`${game.animal.name} has reached adulthood!`);
+        const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
+        $animalImage.attr("src", adultImage); 
+      }
+    }
+
 
     // Buttons
     const $buttonDiv = $(`#buttonDiv`);
@@ -281,7 +324,6 @@ class Cow extends Animal {
     //assigned properties
     this.name = name;
     this.color = color;
-    this.type = type;
   }
   //Methods
   eat() {

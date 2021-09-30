@@ -200,6 +200,8 @@ const game = {
     //TODO Metrics to update
     const $timeAlive = $(`<h5 id="timeAlive">Time alive: ${game.time}:00 </h5>`);
     $("#content").append($timeAlive);
+    const $age = $(`<h5 id="age">Age: ${game.animal.age}</h5>`);
+    $("#content").append($age);
     const $barn = $(`<h5 id="barn">Barn: ${game.barn} </h5>`);
     $("#content").append($barn);
 
@@ -210,8 +212,7 @@ const game = {
     
     const incrementTime = function incrementTime() {
       game.time += 1;
-      console.log(animal.age);
-      animal.age += 0.02;
+      game.animal.age = (game.time / 60);
       updateAge();
 
       let m = Math.floor(game.time/ 60);
@@ -226,10 +227,19 @@ const game = {
     startAliveTimer();
 
     const updateAge = function updateAge() {
-      if (animal.age === 6) {
-        $messages.text(`${game.animal.name} has reached adulthood!`);
-        const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
-        $animalImage.attr("src", adultImage); 
+      if (game.animal.age > 1) {
+        $age.text(`Age: ${Math.floor(game.animal.age)}`);
+        if (game.animal.age === 5) {
+          $("#messages").text(`${game.animal.name} has reached adulthood!`);
+          const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
+          $animalImage.attr("src", adultImage); 
+        } else if (game.animal.age === 10) {
+          $("#messages").text(`${game.animal.name} has fully grown and is ready to join the barn!`);
+          const grownImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+          $animalImage.attr("src", grownImage); 
+        }
+      } else {
+        $age.text("Age: 0");
       }
     }
 
@@ -265,7 +275,7 @@ class Animal {
     this.hunger = 100;
     this.happiness = 100;
     this.sleepiness = 100;
-    this.animation = ["sleep","walk_right","walk_left","walk_up","walk_down"];
+    this.animation = ["sleep","walk_right","walk_left","walk_up","walk_down", "heart"];
 
     //assigned properties
     this.name = name;
@@ -342,7 +352,6 @@ class Bunny extends Animal {
 
     super(name, color);
 
-    this.age = 0;
     this.hunger = 60;
     this.happiness = 50;
     this.sleepiness = 90;
@@ -369,7 +378,6 @@ class Goat extends Animal {
 
     super(name, color);
 
-    this.age = 0;
     this.hunger = 50;
     this.happiness = 50;
     this.sleepiness = 100;
@@ -396,7 +404,6 @@ class Pig extends Animal {
 
     super(name, color);
 
-    this.age = 0;
     this.hunger = 90;
     this.happiness = 90;
     this.sleepiness = 100;
@@ -424,7 +431,6 @@ class Sheep extends Animal {
 
     super(name, color);
 
-    this.age = 0;
     this.hunger = 70;
     this.happiness = 90;
     this.sleepiness = 100;
@@ -460,12 +466,8 @@ const sayHello = function sayHello(event){
   console.log("Hi");
 };
 
-// Creating objects
 
-
-
-/* === Event Listeners === */
-
+/* === Event Listeners on Load === */
 
 
 $(window).on("load", game.hideMeters);

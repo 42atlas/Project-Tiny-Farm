@@ -53,44 +53,62 @@ const game = {
     /* --- Event Listener --- */
     $("#start").on("click", game.setUpMenu);
   },
+  
+  generateAnimal(name) {
+    const type = getType;
+    const animalName = name;
+    return type;
+  },
 
   setUpMenu() {
     const $inside = $("#inside");
     const $startScreen = $("#startScreen");
     $startScreen.remove();
-  
+    
     const $menuScreen = $(`<section id="menuScreen"></section>`);
     $inside.append($menuScreen);
     
     const $choose= $(`<h3>Choose your animal: </h4>`);
     $menuScreen.append($choose);
-
+    
     const $animalsDiv = $(`<article id="animalsDiv"></article>`);
     $menuScreen.append($animalsDiv);
-
+    
     //Animals
-    const $goatkid = $(`<img src="Images/title/goat_kid/goat_halfbrown_walk_left.gif" class="animals"  id="goatkid">`);
+    const $goatkid = $(`<img src="Images/title/goat_kid/goat_halfbrown_walk_left.gif" class="animals"  id="goat">`);
     $animalsDiv.append($goatkid);
-    const $lamb = $(`<img src="Images/title/lamb/sheep_walk_left.gif" class="animals"  id="lamb">`);
+    const $lamb = $(`<img src="Images/title/lamb/sheep_walk_left.gif" class="animals"  id="sheep">`);
     $animalsDiv.append($lamb);
-    const $piglet = $(`<img src="Images/title/piglet/pig_walk_left.gif" class="animals" id="piglet">`);
+    const $piglet = $(`<img src="Images/title/piglet/pig_walk_left.gif" class="animals" id="pig">`);
     $animalsDiv.append($piglet);
     const $cow = $(`<img src="Images/title/calf_white/babycow_walk_left.gif" class="animals" id="cow">`);
     $animalsDiv.append($cow);
-    const $chick = $(`<img src="Images/title/chick_white/babychick_walk_left.gif" class="animals"  id="chick">`);
+    const $chick = $(`<img src="Images/title/chick_white/babychick_walk_left.gif" class="animals"  id="chicken">`);
     $animalsDiv.append($chick);
     const $bunny = $(`<img src="Images/title/bunny_white/babybunny_walk_left.gif" class="animals"  id="bunny">`);
     $animalsDiv.append($bunny);
+    
+    //Name and confirm
     const $nameDiv = $(`<article id="nameDiv"></article>`);
     $menuScreen.append($nameDiv);
-
-    //Name and confirm
     const $name = $(`<h3>Give it a name: </h3><input type="text" id="name">`);
     $nameDiv.append($name);
     const $confirm = $(`<button id="confirm" class="rpgui-button" type="button"><p>OK</p></button>`);
     $nameDiv.append($confirm);
-   
-    /* --- Event Listener --- */
+  
+    const $nameAnimal = $("#name").text;    
+
+    /* --- Event Listeners --- */
+
+    $("#sheep").on("click", game.generateAnimal($nameAnimal));
+    $("#chicken").on("click", getType);
+    $("#pig").on("click", getType);
+    $("#cow").on("click", getType);
+    $("#bunny").on("click", getType);
+    $("#goat").on("click", getType);
+
+    $("confirm").on("click");
+
     $("#confirm").on("click", game.setUpGame);
   },
 
@@ -134,9 +152,9 @@ const game = {
 
     /* --- Event Listeners --- */
 
-    $feed.on("click");
-    $cuddle.on("click");
-    $sleep.on("click");
+    $feed.on("click", $animal.eat);
+    $cuddle.on("click", $animal.cuddle);
+    $sleep.on("click", $animal.sleep);
 
   },
 
@@ -154,12 +172,13 @@ class Animal {
     this.hunger = 100;
     this.happiness = 100;
     this.sleepiness = 100;
+
     //assigned properties
     this.name = name;
     this.color = color;
   }
   // Methods
-  eat (food) {
+  eat () {
     this.hunger += 10;
   }
   cuddle () {
@@ -170,12 +189,182 @@ class Animal {
   }
 }
 
+class Chicken extends Animal {
+  constructor(name, color) {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 90;
+    this.happiness = 90;
+    this.sleepiness = 100;
+    this.type = "chicken";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 20;
+  }
+  cuddle () {
+    this.happiness += 10;
+  }
+  sleep () {
+    this.sleepiness += 20;
+  }
+}  
+
+class Cow extends Animal {
+  constructor(name, color) {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 50;
+    this.happiness = 50;
+    this.sleepiness = 50;
+    this.type = "cow";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+    this.type = type;
+  }
+  //Methods
+  eat() {
+    this.hunger += 5;
+  }
+  cuddle () {
+    this.happiness += 40;
+  }
+  sleep () {
+    this.sleepiness += 30;
+  }
+} 
+
+class Bunny extends Animal {
+  constructor(name, color) {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 60;
+    this.happiness = 50;
+    this.sleepiness = 90;
+    this.type = "bunny";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 20;
+  }
+  cuddle () {
+    this.happiness += 50;
+  }
+  sleep () {
+    this.sleepiness += 10;
+  }
+} 
+
+class Goat extends Animal {
+  constructor(name, color = "brown") {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 50;
+    this.happiness = 50;
+    this.sleepiness = 100;
+    this.type = "goat";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 10;
+  }
+  cuddle () {
+    this.happiness += 10;
+  }
+  sleep () {
+    this.sleepiness += 20;
+  }
+}
+
+class Pig extends Animal {
+  constructor(name, color = "white") {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 90;
+    this.happiness = 90;
+    this.sleepiness = 100;
+    this.type = "pig";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 5;
+  }
+  cuddle () {
+    this.happiness += 10;
+  }
+  sleep () {
+    this.sleepiness += 50;
+  }
+}
+
+class Sheep extends Animal {
+  constructor(name, color = "white") {
+
+    super(name, color);
+
+    this.age = 0;
+    this.hunger = 70;
+    this.happiness = 90;
+    this.sleepiness = 100;
+    this.type = "sheep";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 10;
+  }
+  cuddle () {
+    this.happiness += 25;
+  }
+  sleep () {
+    this.sleepiness += 30;
+  }
+}
+
+
 /* === Functions === */
 
 const randomizeColor = function randomizeColor() {
   const color = ["white", "brown", "black"];
   const index = Math.floor(Math.random()*color.length);
   return color[index];
+};
+
+const getType = function getType(event) {
+  const type = $(event.target).attr("id");
+  console.log(type);
+  return type;
 };
 
 const sayHello = function sayHello(event){

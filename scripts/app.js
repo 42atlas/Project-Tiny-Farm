@@ -15,17 +15,17 @@ console.log(
 
 //1. When the user loads the game, they are greeted with a start menu with music playing in the background (insert a mute button), that shows the start button
 
-//2. When the user presses the start button, the game screen transitions into a screen asking for the user to choose one of three farm animals by clicking on their associated picture (chicken, bunny, cow?). Upon clicked, the animal's icon will light up and a submit button with an input-field will populate asking the user to input a name for their new animal.
+//2. When the user presses the start button, the game screen transitions into a screen asking for the user to choose one of six farm animals by clicking on their associated picture (chicken, bunny, cow, goat, sheep, pig). Upon clicked, the animal's icon will light up and the user must enter a name for the animal in an input-field. The user must enter a valid name (not empty string) for the confirm button to work and bring them to the game screen.
 
-//3. After submitting, the screen will transition and showcase a farm barn background with an egg on the screen (randomized pattern and color) being hatched, firstly the egg is completely uncracked and over 10 seconds it gradually cracks, hatching and revealing the animal. The timer on the top right will show time kept alive and start counting up.
+//3. After submitting, the screen will transition to the game screen showcasing revealing the baby animal who is sleeping. The user may wake the animal by clicking on the image of it. The timer on the message section will show time kept alive and start counting up, the age of the animal will start at 0 and increment over time as well. The barn metric will also show, starting at a value of 0.
 
-//4. Upon reveal, the hunger, happiness, and sleepiness meters of the animal appears along with 3 new buttons on the bottom of the screen (feed, cuddle, and sleep). The meters begin to decrease by different rates (hunger -0.5/s, happiness - 0.3/s, and sleepiness: 0.1/s) and the user must interact with the buttons in order to feed, cuddle, and make the animal go to sleep. When fed increment the hunger by +10, cuddle + 5 to happiness, sleep +100 over 20 seconds. The animal will have expression bubbles depending on the actionable item and the meters.
+//4. Upon reveal, the hunger, happiness, and sleepiness meters of the animal appears along with 3 new buttons on the bottom of the screen (feed, cuddle, and sleep). The meters begin to decrease by different rates and the user must interact with the buttons in order to feed, cuddle, and make the animal go to sleep. When the buttons are pressed, the corresponding metric to the actionable button will increase depending on the type of animal.
 
 //5. As the time passes and the animal will be animated across the screen, moving left and right. While the animal is still alive, the animal will start growing (two stages: baby -> adult), 5 mins of being kept alive the animal will grow to full adult size.
 
-//6. If animal is kept alive in adult size for more 5 mins, then the game will be over and the animal well be put in a full barn (score is updated for number of animals put in the barn), so the player gets the Game Over - Successful screen and can choose to raise another animal by pressing the continue button, or reset the entire game from the beginning with the reset button.
+//6. If animal is kept alive in adult size for more 5 mins (total game time and time kept alive = 10 minutes), then the game will be over and the animal will be put in a full barn (barn score is updated for number of animals successfully sent into the barn), so the player gets the Game Over - Successful screen and can choose to raise another animal by pressing the continue button, or reset the entire game from the beginning with the reset button.
 
-//7. At any point if the hunger, sleep, or happiness, meter reaches 10, the animal passes away and the Game over - RIP screen appears where the player can choose to raise another animal by pressing the continue button or reset the entire game from the beginning with the reset button.
+//7. At any point if the hunger, sleep, or happiness, meter reaches 0, the animal passes away and the Game over - RIP screen appears where the player can choose to raise another animal by pressing the continue button or to reset the entire game from the beginning with the reset button.
 
 
 /* === Variables === */
@@ -34,9 +34,7 @@ console.log(
 const game = {
   /* --- Game Values --- */
   aliveTimer: null,
-  hungerTimer: null,
-  happinessTimer: null,
-  sleepinessTimer: null,
+  sleepTimer: null,
   time: 0,
   barn: 0,
   animalType: null,
@@ -119,13 +117,27 @@ const game = {
       return game.animalType = type;
     };
 
-    const generateAnimal = function getName(event) {
+    const checkName = function checkName (){
+           
       const animalName = $name[1].value;
-      console.log (animalName);
 
+      if (animalName === "") {
+        $("#name").css("border", "3px solid orangered");
+        $("#name").css("box-shadow", "0 0 6px darkred");
+
+        return;
+        
+      } else {
+        generateAnimal();
+        game.setUpGame();
+      }
+    };
+
+    const generateAnimal = function generateAnimal(event) {
+     
+      const animalName = $name[1].value;
       const type = game.animalType;
-      console.log(type);
-      
+
       if (type === "chicken") {
         const animal = new Chicken(animalName, randomizeColor());
         return game.animal = animal;
@@ -145,6 +157,7 @@ const game = {
         const animal = new Sheep(animalName, "light");
         return game.animal = animal;
       }
+        
     };
 
     /* --- Event Listeners --- */
@@ -156,9 +169,8 @@ const game = {
     $("#bunny").on("click", updateType);
     $("#goat").on("click", updateType);
 
-    $("#confirm").on("click", generateAnimal);
+    $("#confirm").on("click", checkName);
 
-    $("#confirm").on("click", game.setUpGame);
   },
 
   setUpGame() {
@@ -195,15 +207,21 @@ const game = {
     
 
     const $messages = $("#messages");
-    $messages.text(`${game.animal.name} is currently sleeping. Maybe doing something will wake ${game.animal.name} up?`);
+    $messages.text(`${game.animal.name} is falling asleep, try tapping it awake!`);
 
-    //TODO Metrics to update
     const $timeAlive = $(`<h5 id="timeAlive">Time alive: ${game.time}:00 </h5>`);
     $("#content").append($timeAlive);
     const $age = $(`<h5 id="age">Age: ${game.animal.age}</h5>`);
     $("#content").append($age);
     const $barn = $(`<h5 id="barn">Barn: ${game.barn} </h5>`);
     $("#content").append($barn);
+
+    const wake = function wake() {
+      const fileName = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
+      $animalImage.attr("src", fileName);
+      $messages.text(`${game.animal.name} is awake, maybe try feeding it!`);
+
+    };
 
     
     const startAliveTimer = function startAliveTimer() {
@@ -227,6 +245,16 @@ const game = {
 
     startAliveTimer();
 
+    const startSleepTimer = function startSleepTimer() {
+      game.sleepTimer = setInterval(incrementSleepTime, 500);
+    };
+    
+    const incrementSleepTime = function incrementSleepTime() {
+      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { game.animal.sleep() };
+      console.log(game.animal.sleepiness);
+    };
+
+
     const updateAge = function updateAge() {
       if (game.animal.age > 1) {
         $age.text(`Age: ${Math.floor(game.animal.age)}`);
@@ -248,51 +276,57 @@ const game = {
       const $hunger = $(".rpgui-progress-fill.red");
       const decreaseHunger = `${game.animal.hunger}%`
       $hunger.width(decreaseHunger);
+      $hunger.css("max-width", "100%");
 
       const $happiness = $(".rpgui-progress-fill.green");
       const decreaseHappiness = `${game.animal.happiness}%`
       $happiness.width(decreaseHappiness);
+      $happiness.css("max-width", "100%");
 
       const $sleepiness = $(".rpgui-progress-fill.blue");
       const decreaseSleepiness = `${game.animal.sleepiness}%`
       $sleepiness.width(decreaseSleepiness);
+      $sleepiness.css("max-width", "100%");
 
       //TODO -- add the death screen in else statements
       if (game.animal.hunger > 0) { 
         game.animal.hunger -= 1; 
-      } else {
+      } else if (game.animal.hunger === 0) {
         console.log("died.");
       }
       
       if (game.animal.sleepiness > 0) { 
-        game.animal.sleepiness -= 2; 
-      } else {
+        game.animal.sleepiness -= 1; 
+      } else if (game.animal.sleepiness === 0){
         console.log("died.");
       }
 
       if (game.animal.happiness > 0) {
-         game.animal.happiness -= 4; 
-      } else {
+         game.animal.happiness -= 1; 
+      } else if (game.animal.happiness === 0){
         console.log("died.");
       }
     };
 
     const fixHunger = function fixHunger(){
-      game.animal.eat();
+      clearInterval(game.sleepTimer);
+      
+      if (game.animal.hunger > 0 && game.animal.hunger < 100) { game.animal.eat(); }
 
       if (game.animal.age > 5) {
         $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
-        const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[4] + ".gif";
         $animalImage.attr("src", imageFile); 
       } else if (game.animal.age < 5) {
         $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
-        const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[4] + ".gif";
         $animalImage.attr("src", imageFile); 
       }
     };
 
     const fixHappiness = function fixHappiness(){
-      game.animal.cuddle();
+      clearInterval(game.sleepTimer);
+      if (game.animal.happiness > 0 && game.animal.happiness < 100) { game.animal.cuddle(); }
 
       if (game.animal.age > 5) {
         $("#messages").text(`You cuddled ${game.animal.name}, look at how happy it is!`);
@@ -306,7 +340,7 @@ const game = {
     };
 
     const fixSleepiness = function fixSleepiness(){
-      game.animal.sleep();
+      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { startSleepTimer()}
 
       if (game.animal.age > 5) {
         $("#messages").text(`Shh... ${game.animal.name} is sleeping.`);
@@ -332,12 +366,24 @@ const game = {
 
     /* --- Event Listeners --- */
 
+    $animalImage.on("click", wake);
+
     $feed.on("click", fixHunger);
     $cuddle.on("click", fixHappiness);
     $sleep.on("click", fixSleepiness);
 
   },
 
+// TODO -- game over screen
+  setUpGameOver () {
+
+  },
+
+  setUpSuccess () {
+
+  },
+
+// TODO -- reset game function
   resetGame() {
 
   },
@@ -393,7 +439,7 @@ class Chicken extends Animal {
     this.happiness += 15;
   }
   sleep () {
-    this.sleepiness += 10;
+    this.sleepiness += 1;
   }
 }  
 
@@ -420,7 +466,7 @@ class Cow extends Animal {
     this.happiness += 15;
   }
   sleep () {
-    this.sleepiness += 10;
+    this.sleepiness += 1;
   }
 } 
 
@@ -446,7 +492,7 @@ class Bunny extends Animal {
     this.happiness += 5;
   }
   sleep () {
-    this.sleepiness += 10;
+    this.sleepiness += 1;
   }
 } 
 
@@ -472,7 +518,7 @@ class Goat extends Animal {
     this.happiness += 15;
   }
   sleep () {
-    this.sleepiness += 10;
+    this.sleepiness += 1;
   }
 }
 
@@ -499,7 +545,7 @@ class Pig extends Animal {
     this.happiness += 10;
   }
   sleep () {
-    this.sleepiness += 10;
+    this.sleepiness += 1;
   }
 }
 
@@ -525,7 +571,7 @@ class Sheep extends Animal {
     this.happiness += 20;
   }
   sleep () {
-    this.sleepiness += 20;
+    this.sleepiness += 1;
   }
 }
 

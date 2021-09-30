@@ -71,7 +71,7 @@ h1 {
   flex-flow: row wrap;
   justify-content: space-between;
   align-items: stretch;
-  align-content: center;
+  align-content: space-around;
   height: 115px;
   padding: 10px 10px;
 }
@@ -123,14 +123,14 @@ h1 {
 .animals:hover{
   border: 3px solid var(--accent);
   border-radius: 20px;
-  box-shadow: 2px 4px rgb(41, 41, 41);
+  box-shadow: 1px 5px 10px rgb(41, 41, 41);
   transform: scale(1.2);
   transition: 0.15s;
 }
 .selected {
   border: 3px solid mediumseagreen;
   border-radius: 20px;
-  box-shadow: 2px 4px rgb(41, 41, 41);
+  box-shadow: 1px 5px 10px rgb(41, 41, 41);
   transform: scale(1.1);
   transition: 0.1s;
 }

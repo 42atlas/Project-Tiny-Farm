@@ -87,12 +87,13 @@ h1 {
   display: flex;
   flex-flow: column wrap;
   justify-content: space-evenly;
-  margin: 30px;
+  margin: 30px 0 20px 0;
   height: 350px;
   width: 350px;
   background-color: var(--secondary);
   padding: 20px;
   border-radius: 200px;
+  font-size: 20px;
 }
 #house {
   margin: 0px;
@@ -101,10 +102,14 @@ h1 {
   align-self: center;
 }
 #start {
-  background-color: var(--accent);
-  width: 300px;
+  width: 350px;
   height: 80px;
   border-radius: 2px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+#start:hover {
+  background-color: var(--accent);
 }
 #animalsDiv {
   display: flex;
@@ -221,4 +226,52 @@ h5 {
 #barn {
   text-align: left;
   align-self: flex-end;
+}
+
+#end {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  font-size: 56px;
+  line-height: 1.5;
+  margin: 50px 10px 40px 0px;
+  height: 225px;
+  width: 500px;
+  background-color: var(--secondary);
+  padding: 40px;
+  border-radius: 80px;
+}
+#ghost {
+  height: 150px;
+  width: 150px;
+  align-self: center;
+}
+
+#resetDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#reset {
+  margin-top: 50px;
+  width: 300px;
+  height: 80px;
+}
+
+#reset:hover {
+  background-color: var(--accent);
+}
+
+#reset p {
+  font-size: 18px;
+}
+
+#yourAnimal {
+  width: 133px;
+  height: 133px;
+  margin: 0 0 0 10px;
 }

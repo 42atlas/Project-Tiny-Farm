@@ -17,15 +17,15 @@ console.log(
 
 //2. When the user presses the start button, the game screen transitions into a screen asking for the user to choose one of six farm animals by clicking on their associated picture (chicken, bunny, cow, goat, sheep, pig). Upon clicked, the animal's icon will light up and the user must enter a name for the animal in an input-field. The user must enter a valid name (not empty string) for the confirm button to work and bring them to the game screen.
 
-//3. After submitting, the screen will transition to the game screen showcasing revealing the baby animal who is sleeping. The user may wake the animal by clicking on the image of it. The timer on the message section will show time kept alive and start counting up, the age of the animal will start at 0 and increment over time as well. The barn metric will also show, starting at a value of 0.
+//3. After submitting, the screen will transition to the game screen showcasing revealing the baby animal who is sleeping. The user may wake the animal by clicking on the image of it. The timer on the message section will show time kept alive and start counting up, the age of the animal will start at 0 and increment over time as well. 
 
 //4. Upon reveal, the hunger, happiness, and sleepiness meters of the animal appears along with 3 new buttons on the bottom of the screen (feed, cuddle, and sleep). The meters begin to decrease by different rates and the user must interact with the buttons in order to feed, cuddle, and make the animal go to sleep. When the buttons are pressed, the corresponding metric to the actionable button will increase depending on the type of animal.
 
 //5. As the time passes and the animal will be animated across the screen, moving left and right. While the animal is still alive, the animal will start growing (two stages: baby -> adult), 5 mins of being kept alive the animal will grow to full adult size.
 
-//6. If animal is kept alive in adult size for more 5 mins (total game time and time kept alive = 10 minutes), then the game will be over and the animal will be put in a full barn (barn score is updated for number of animals successfully sent into the barn), so the player gets the Game Over - Successful screen and can choose to raise another animal by pressing the continue button, or reset the entire game from the beginning with the reset button.
+//6. If animal is kept alive in adult size for more 5 mins (total game time and time kept alive = 10 minutes), then the game will be over and the animal will be sent to a loving barn, so the player gets the Game Over - Successful screen and can choose to raise another animal by pressing the reset game button.
 
-//7. At any point if the hunger, sleep, or happiness, meter reaches 0, the animal passes away and the Game over - RIP screen appears where the player can choose to raise another animal by pressing the continue button or to reset the entire game from the beginning with the reset button.
+//7. At any point if the hunger, sleep, or happiness, meter reaches 0, the animal passes away and the Game over - RIP screen appears where the player can press the reset game button to reset the entire game from the beginning.
 
 
 /* === Variables === */
@@ -36,7 +36,6 @@ const game = {
   aliveTimer: null,
   sleepTimer: null,
   time: 0,
-  barn: 0,
   animalType: null,
   name: null,
   animal: null,
@@ -54,7 +53,7 @@ const game = {
 
     const $title = $(`<h2 id="title"><img src="Images/title/barn_animal.gif" id="house">Tiny Farm</h2>`);
     $startScreen.append($title);
-    const $start = $(`<button id="start" class="rpgui-button" type="button"><p>Start your farm!</p></button>`);
+    const $start = $(`<button id="start" class="rpgui-button" type="button"><p>Start your Farm!</p></button>`);
     $startScreen.append($start);
     
     /* --- Event Listener --- */
@@ -221,8 +220,6 @@ const game = {
     $("#content").append($timeAlive);
     const $age = $(`<h5 id="age">Age: ${game.animal.age}</h5>`);
     $("#content").append($age);
-    const $barn = $(`<h5 id="barn">Barn: ${game.barn} </h5>`);
-    $("#content").append($barn);
     
     const pet = function pet() {
       clearInterval(game.sleepTimer);
@@ -262,7 +259,7 @@ const game = {
           const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
           $animalImage.attr("src", adultImage); 
         } else if (game.animal.age === 10) {
-          $("#messages").text(`${game.animal.name} has fully grown and is ready to join the barn!`);
+          $("#messages").text(`${game.animal.name} has fully grown and is being sent to a loving barn!`);
           const grownImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
           $animalImage.attr("src", grownImage); 
         }
@@ -375,11 +372,61 @@ const game = {
 
 // TODO -- game over screen
   setUpGameOver () {
+    const $inside = $("#inside");
+    $("#gameScreen").remove();
 
+    const $endScreen = $(`<section id="endScreen"></section>`);
+    $inside.append($endScreen);
+
+    const $end = $(`<h2 id="end">GAME OVER<img src="Images/end/ghost_walk_down.gif" id="ghost"></h2><hr id="hrG" class="golden" />`);
+    $endScreen.append($end);
+
+    const $resetDiv = $('<div id="resetDiv"></div>');
+    $endScreen.append($resetDiv);
+    const $reset = $(`<button id="reset" class="rpgui-button" type="button"><p>Reset Game</p></button>`);
+    $resetDiv.append($reset);
+    
+    /* --- Event Listeners --- */
+    $end.on("click", () => {
+      $("#ghost").attr("src","Images/end/ghost_die.gif");
+    });
+
+    $("#reset").on("click", () => {
+      $endScreen.remove();
+      game.setUpStart()}
+    );
   },
 
+//FIXME Need to make the animal object so that it can read the type
   setUpSuccess () {
+    const $inside = $("#inside");
+    $("#gameScreen").remove();
 
+    const $endScreen = $(`<section id="endScreen"></section>`);
+    $inside.append($endScreen);
+
+    const $end = $(`<h2 id="end">YOU WIN!<img id="yourAnimal"></h2><hr id="hrG" class="golden" />`);
+    // const successPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
+    // $animalImage.attr("src", successPic); 
+    $endScreen.append($end);
+    $("#yourAnimal").attr("src", "Images/animals/adult/pig_light/pig_light_heart.gif");
+
+    const $resetDiv = $('<div id="resetDiv"></div>');
+    $endScreen.append($resetDiv);
+    const $reset = $(`<button id="reset" class="rpgui-button" type="button"><p>Reset Game</p></button>`);
+    $resetDiv.append($reset);
+    
+    /* --- Event Listeners --- */
+    $end.on("click", () => {
+      // const newPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+      //($"#yourAnimal").attr("src", newPic);
+      $("#yourAnimal").attr("src", "Images/end/end_house.gif");
+    });
+
+    $("#reset").on("click", () => {
+      $endScreen.remove();
+      game.setUpStart()}
+    );
   },
 
 // TODO -- reset game function
@@ -594,4 +641,6 @@ const sayHello = function sayHello(event){
 
 $(window).on("load", game.hideMeters);
 
-$(window).on("load", game.setUpStart);
+//$(window).on("load", game.setUpStart);
+
+$(window).on("load", game.setUpSuccess);

@@ -204,23 +204,32 @@ const game = {
                         </div>`);
     $gameScreen.append($content);
 
+    const startSleepTimer = function startSleepTimer() {
+      game.sleepTimer = setInterval(incrementSleepTime, 500);
+    };
     
-
+    const incrementSleepTime = function incrementSleepTime() {
+      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { game.animal.sleep() };
+      console.log(game.animal.sleepiness);
+    };
+    
     const $messages = $("#messages");
+    startSleepTimer();
     $messages.text(`${game.animal.name} is falling asleep, try tapping it awake!`);
-
+    
     const $timeAlive = $(`<h5 id="timeAlive">Time alive: ${game.time}:00 </h5>`);
     $("#content").append($timeAlive);
     const $age = $(`<h5 id="age">Age: ${game.animal.age}</h5>`);
     $("#content").append($age);
     const $barn = $(`<h5 id="barn">Barn: ${game.barn} </h5>`);
     $("#content").append($barn);
-
-    const wake = function wake() {
-      const fileName = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
+    
+    const pet = function pet() {
+      clearInterval(game.sleepTimer);
+      const fileName = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
       $animalImage.attr("src", fileName);
-      $messages.text(`${game.animal.name} is awake, maybe try feeding it!`);
-
+      $messages.text(`You pet ${game.animal.name}, it seems ${game.animal.name} likes you!`);
+      game.animal.happiness++;
     };
 
     
@@ -244,16 +253,6 @@ const game = {
     };
 
     startAliveTimer();
-
-    const startSleepTimer = function startSleepTimer() {
-      game.sleepTimer = setInterval(incrementSleepTime, 500);
-    };
-    
-    const incrementSleepTime = function incrementSleepTime() {
-      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { game.animal.sleep() };
-      console.log(game.animal.sleepiness);
-    };
-
 
     const updateAge = function updateAge() {
       if (game.animal.age > 1) {
@@ -343,11 +342,11 @@ const game = {
       if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { startSleepTimer()}
 
       if (game.animal.age > 5) {
-        $("#messages").text(`Shh... ${game.animal.name} is sleeping.`);
+        $("#messages").text(`Shh... ${game.animal.name} is sleeping right now.`);
         const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
         $animalImage.attr("src", imageFile); 
       } else if (game.animal.age < 5) {
-        $("#messages").text(`Shh... ${game.animal.name} is sleeping.`);
+        $("#messages").text(`Shh... ${game.animal.name} is sleeping right now.`);
         const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
         $animalImage.attr("src", imageFile); 
       }
@@ -366,7 +365,7 @@ const game = {
 
     /* --- Event Listeners --- */
 
-    $animalImage.on("click", wake);
+    $animalImage.on("click", pet);
 
     $feed.on("click", fixHunger);
     $cuddle.on("click", fixHappiness);

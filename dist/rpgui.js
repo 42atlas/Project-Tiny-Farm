@@ -332,9 +332,9 @@ RPGUI.__set_funcs["progress"] = function(elem, value)
 	var edge_left = RPGUI.get_child_with_class(elem, "rpgui-progress-left-edge");
 	var edge_right = RPGUI.get_child_with_class(elem, "rpgui-progress-right-edge");
 
-	// set progress width
-	progress.style.left = "0px";
-	progress.style.width = (value * 100) + "%";
+	// // set progress width
+	//progress.style.left = "0px";
+	// progress.style.width = (value * 100) + "%";
 };
 
 // init all progress elements on page load

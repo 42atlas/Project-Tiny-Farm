@@ -214,6 +214,7 @@ const game = {
       game.time += 1;
       game.animal.age = (game.time / 60);
       updateAge();
+      decrementMeters();
 
       let m = Math.floor(game.time/ 60);
       let s = Math.floor(game.time % 60 % 60);
@@ -243,6 +244,82 @@ const game = {
       }
     }
 
+    const decrementMeters = function decrementMeters() {
+      const $hunger = $(".rpgui-progress-fill.red");
+      const decreaseHunger = `${game.animal.hunger}%`
+      $hunger.width(decreaseHunger);
+
+      const $happiness = $(".rpgui-progress-fill.green");
+      const decreaseHappiness = `${game.animal.happiness}%`
+      $happiness.width(decreaseHappiness);
+
+      const $sleepiness = $(".rpgui-progress-fill.blue");
+      const decreaseSleepiness = `${game.animal.sleepiness}%`
+      $sleepiness.width(decreaseSleepiness);
+
+      //TODO -- add the death screen in else statements
+      if (game.animal.hunger > 0) { 
+        game.animal.hunger -= 1; 
+      } else {
+        console.log("died.");
+      }
+      
+      if (game.animal.sleepiness > 0) { 
+        game.animal.sleepiness -= 2; 
+      } else {
+        console.log("died.");
+      }
+
+      if (game.animal.happiness > 0) {
+         game.animal.happiness -= 4; 
+      } else {
+        console.log("died.");
+      }
+    };
+
+    const fixHunger = function fixHunger(){
+      game.animal.eat();
+
+      if (game.animal.age > 5) {
+        $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
+        const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      } else if (game.animal.age < 5) {
+        $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
+        const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      }
+    };
+
+    const fixHappiness = function fixHappiness(){
+      game.animal.cuddle();
+
+      if (game.animal.age > 5) {
+        $("#messages").text(`You cuddled ${game.animal.name}, look at how happy it is!`);
+        const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      } else if (game.animal.age < 5) {
+        $("#messages").text(`You cuddled ${game.animal.name}, look at how happy it is!`);
+        const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      }
+    };
+
+    const fixSleepiness = function fixSleepiness(){
+      game.animal.sleep();
+
+      if (game.animal.age > 5) {
+        $("#messages").text(`Shh... ${game.animal.name} is sleeping.`);
+        const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      } else if (game.animal.age < 5) {
+        $("#messages").text(`Shh... ${game.animal.name} is sleeping.`);
+        const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
+        $animalImage.attr("src", imageFile); 
+      }
+    };
+    
+
 
     // Buttons
     const $buttonDiv = $(`#buttonDiv`);
@@ -255,9 +332,9 @@ const game = {
 
     /* --- Event Listeners --- */
 
-    $feed.on("click", game.animal.eat);
-    $cuddle.on("click", game.animal.cuddle);
-    $sleep.on("click", game.animal.sleep);
+    $feed.on("click", fixHunger);
+    $cuddle.on("click", fixHappiness);
+    $sleep.on("click", fixSleepiness);
 
   },
 
@@ -299,9 +376,9 @@ class Chicken extends Animal {
     super(name, color);
 
     this.age = 0;
-    this.hunger = 90;
-    this.happiness = 90;
-    this.sleepiness = 100;
+    this.hunger = 100;
+    this.happiness = 85;
+    this.sleepiness = 85;
     this.type = "chicken";
 
     //assigned properties
@@ -310,13 +387,13 @@ class Chicken extends Animal {
   }
   //Methods
   eat() {
-    this.hunger += 20;
+    this.hunger += 4;
   }
   cuddle () {
-    this.happiness += 10;
+    this.happiness += 15;
   }
   sleep () {
-    this.sleepiness += 20;
+    this.sleepiness += 10;
   }
 }  
 
@@ -326,10 +403,36 @@ class Cow extends Animal {
     super(name, color);
 
     this.age = 0;
-    this.hunger = 50;
-    this.happiness = 50;
-    this.sleepiness = 50;
+    this.hunger = 90;
+    this.happiness = 85;
+    this.sleepiness = 90;
     this.type = "cow";
+
+    //assigned properties
+    this.name = name;
+    this.color = color;
+  }
+  //Methods
+  eat() {
+    this.hunger += 2;
+  }
+  cuddle () {
+    this.happiness += 15;
+  }
+  sleep () {
+    this.sleepiness += 10;
+  }
+} 
+
+class Bunny extends Animal {
+  constructor(name, color) {
+
+    super(name, color);
+
+    this.hunger = 95;
+    this.happiness = 95;
+    this.sleepiness = 90;
+    this.type = "bunny";
 
     //assigned properties
     this.name = name;
@@ -340,33 +443,7 @@ class Cow extends Animal {
     this.hunger += 5;
   }
   cuddle () {
-    this.happiness += 40;
-  }
-  sleep () {
-    this.sleepiness += 30;
-  }
-} 
-
-class Bunny extends Animal {
-  constructor(name, color) {
-
-    super(name, color);
-
-    this.hunger = 60;
-    this.happiness = 50;
-    this.sleepiness = 90;
-    this.type = "bunny";
-
-    //assigned properties
-    this.name = name;
-    this.color = color;
-  }
-  //Methods
-  eat() {
-    this.hunger += 20;
-  }
-  cuddle () {
-    this.happiness += 50;
+    this.happiness += 5;
   }
   sleep () {
     this.sleepiness += 10;
@@ -378,9 +455,9 @@ class Goat extends Animal {
 
     super(name, color);
 
-    this.hunger = 50;
-    this.happiness = 50;
-    this.sleepiness = 100;
+    this.hunger = 90;
+    this.happiness = 85;
+    this.sleepiness = 90;
     this.type = "goat";
 
     //assigned properties
@@ -392,10 +469,10 @@ class Goat extends Animal {
     this.hunger += 10;
   }
   cuddle () {
-    this.happiness += 10;
+    this.happiness += 15;
   }
   sleep () {
-    this.sleepiness += 20;
+    this.sleepiness += 10;
   }
 }
 
@@ -404,7 +481,7 @@ class Pig extends Animal {
 
     super(name, color);
 
-    this.hunger = 90;
+    this.hunger = 95;
     this.happiness = 90;
     this.sleepiness = 100;
     this.type = "pig";
@@ -422,7 +499,7 @@ class Pig extends Animal {
     this.happiness += 10;
   }
   sleep () {
-    this.sleepiness += 50;
+    this.sleepiness += 10;
   }
 }
 
@@ -431,9 +508,9 @@ class Sheep extends Animal {
 
     super(name, color);
 
-    this.hunger = 70;
-    this.happiness = 90;
-    this.sleepiness = 100;
+    this.hunger = 90;
+    this.happiness = 80;
+    this.sleepiness = 80;
     this.type = "sheep";
 
     //assigned properties
@@ -445,10 +522,10 @@ class Sheep extends Animal {
     this.hunger += 10;
   }
   cuddle () {
-    this.happiness += 25;
+    this.happiness += 20;
   }
   sleep () {
-    this.sleepiness += 30;
+    this.sleepiness += 20;
   }
 }
 

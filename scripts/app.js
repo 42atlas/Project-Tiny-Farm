@@ -34,6 +34,10 @@ console.log(
 const game = {
   timeAlive: 0,
   barn: 0,
+  animalType: null,
+  name: null,
+  animal: null,
+
 
   hideMeters() {
     const $meters = $(`#meters`);
@@ -54,12 +58,6 @@ const game = {
     $("#start").on("click", game.setUpMenu);
   },
   
-  generateAnimal(name) {
-    const type = getType;
-    const animalName = name;
-    return type;
-  },
-
   setUpMenu() {
     const $inside = $("#inside");
     const $startScreen = $("#startScreen");
@@ -88,6 +86,8 @@ const game = {
     const $bunny = $(`<img src="Images/title/bunny_white/babybunny_walk_left.gif" class="animals"  id="bunny">`);
     $animalsDiv.append($bunny);
     
+    const animalsArray = [$goatkid, $lamb, $piglet, $cow, $chick, $bunny];
+
     //Name and confirm
     const $nameDiv = $(`<article id="nameDiv"></article>`);
     $menuScreen.append($nameDiv);
@@ -96,18 +96,62 @@ const game = {
     const $confirm = $(`<button id="confirm" class="rpgui-button" type="button"><p>OK</p></button>`);
     $nameDiv.append($confirm);
   
-    const $nameAnimal = $("#name").text;    
+    
+    // Update the type and add CSS selected style to show player selected one animal type
+    const updateType = function updateType(event) {
+      
+      for (i = 0; i < animalsArray.length; i++) {
+        if (animalsArray[i].hasClass("selected")) {
+          animalsArray[i].removeClass("selected");
+        } 
+      }
+      
+      const $animal = $(event.target);
+      const type = $animal.attr("id");
+      
+      $animal.addClass("selected");
+      
+      return game.animalType = type;
+    };
+
+    const generateAnimal = function getName(event) {
+      const animalName = $name[1].value;
+      console.log (animalName);
+
+      const type = game.animalType;
+      console.log(type);
+      
+      if (type === "chicken") {
+        const animal = new Chicken(animalName, randomizeColor);
+        return game.animal = animal;
+      } else if (type === "bunny") {
+        const animal = new Bunny(animalName, randomizeColor);
+        return game.animal = animal;
+      } else if (type === "cow") {
+        const animal = new Cow(animalName, randomizeColor);
+        return game.animal = animal;
+      } else if (type === "pig") {
+        const animal = new Pig(animalName, "light");
+        return game.animal = animal;
+      } else if (type === "goat") {
+        const animal = new Goat(animalName, "dark");
+        return game.animal = animal;
+      } else if (type === "sheep") {
+        const animal = new Sheep(animalName, "light");
+        return game.animal = animal;
+      }
+    };
 
     /* --- Event Listeners --- */
 
-    $("#sheep").on("click", game.generateAnimal($nameAnimal));
-    $("#chicken").on("click", getType);
-    $("#pig").on("click", getType);
-    $("#cow").on("click", getType);
-    $("#bunny").on("click", getType);
-    $("#goat").on("click", getType);
+    $("#sheep").on("click", updateType);
+    $("#chicken").on("click", updateType);
+    $("#pig").on("click", updateType);
+    $("#cow").on("click", updateType);
+    $("#bunny").on("click", updateType);
+    $("#goat").on("click", updateType);
 
-    $("confirm").on("click");
+    $("#confirm").on("click", generateAnimal);
 
     $("#confirm").on("click", game.setUpGame);
   },
@@ -125,9 +169,15 @@ const game = {
     $meters.show();
 
     // Animal
-    const $animalContainer = $(`<article id="animalContainer">
-                                <img src="Images/Chicken/Chicken/ChickenIdle.gif" id="animal">
-                                </article>`);
+
+    const $animalContainer = $(`<article id="animalContainer"></article>`);
+    $gameScreen.append($animalContainer);
+    const $animalImage = $(`<img src="" id="animal">`);
+    $animalContainer.append($animalImage);
+
+    const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
+
+    $animalImage.attr("src", imageFile);                              
     $gameScreen.append($animalContainer);
 
     // Message box
@@ -152,9 +202,9 @@ const game = {
 
     /* --- Event Listeners --- */
 
-    $feed.on("click", $animal.eat);
-    $cuddle.on("click", $animal.cuddle);
-    $sleep.on("click", $animal.sleep);
+    $feed.on("click", game.animal.eat);
+    $cuddle.on("click", game.animal.cuddle);
+    $sleep.on("click", game.animal.sleep);
 
   },
 
@@ -172,6 +222,7 @@ class Animal {
     this.hunger = 100;
     this.happiness = 100;
     this.sleepiness = 100;
+    this.animation = ["sleep","walk_right","walk_left","walk_up","walk_down"];
 
     //assigned properties
     this.name = name;
@@ -272,7 +323,7 @@ class Bunny extends Animal {
 } 
 
 class Goat extends Animal {
-  constructor(name, color = "brown") {
+  constructor(name, color = "light") {
 
     super(name, color);
 
@@ -299,7 +350,7 @@ class Goat extends Animal {
 }
 
 class Pig extends Animal {
-  constructor(name, color = "white") {
+  constructor(name, color = "light") {
 
     super(name, color);
 
@@ -312,6 +363,7 @@ class Pig extends Animal {
     //assigned properties
     this.name = name;
     this.color = color;
+    
   }
   //Methods
   eat() {
@@ -326,7 +378,7 @@ class Pig extends Animal {
 }
 
 class Sheep extends Animal {
-  constructor(name, color = "white") {
+  constructor(name, color = "dark") {
 
     super(name, color);
 
@@ -356,25 +408,17 @@ class Sheep extends Animal {
 /* === Functions === */
 
 const randomizeColor = function randomizeColor() {
-  const color = ["white", "brown", "black"];
+  const color = ["light", "dark"];
   const index = Math.floor(Math.random()*color.length);
   return color[index];
 };
 
-const getType = function getType(event) {
-  const type = $(event.target).attr("id");
-  console.log(type);
-  return type;
-};
 
 const sayHello = function sayHello(event){
   console.log("Hi");
 };
 
 // Creating objects
-
-const chicken = new Animal("name", randomizeColor()); 
-
 
 
 
@@ -385,5 +429,3 @@ const chicken = new Animal("name", randomizeColor());
 $(window).on("load", game.hideMeters);
 
 $(window).on("load", game.setUpStart);
-
-$("h6").on("click", sayHello);

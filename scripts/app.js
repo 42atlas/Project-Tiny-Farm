@@ -641,6 +641,5 @@ const sayHello = function sayHello(event){
 
 $(window).on("load", game.hideMeters);
 
-//$(window).on("load", game.setUpStart);
+$(window).on("load", game.setUpStart);
 
-$(window).on("load", game.setUpSuccess);

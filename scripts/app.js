@@ -93,7 +93,7 @@ const game = {
     //Name and confirm
     const $nameDiv = $(`<article id="nameDiv"></article>`);
     $menuScreen.append($nameDiv);
-    const $name = $(`<h3>Give it a name: </h3><input type="text" id="name">`);
+    const $name = $(`<h3 id="prompt">Give it a name: </h3><input type="text" id="name">`);
     $nameDiv.append($name);
     const $confirm = $(`<button id="confirm" class="rpgui-button" type="button"><p>OK</p></button>`);
     $nameDiv.append($confirm);
@@ -117,13 +117,14 @@ const game = {
     };
 
     const checkName = function checkName (){
-           
+      
       const animalName = $name[1].value;
-
+      
       if (animalName === "") {
         $("#name").css("border", "3px solid orangered");
         $("#name").css("box-shadow", "0 0 6px darkred");
-
+        $("#prompt").text("Please name your animal:");
+        $("#prompt").css("color", "orangered");
         return;
         
       } else {
@@ -131,6 +132,12 @@ const game = {
         game.setUpGame();
       }
     };
+    $("#name").on("change", () => {
+      $("#prompt").css("color", "white");
+      $("#prompt").text("Give it a name:");
+      $("#name").css("border", "0");
+      $("#name").css("box-shadow", "0 0 1px dimgray");
+    });
 
     const generateAnimal = function generateAnimal(event) {
      
@@ -209,7 +216,6 @@ const game = {
     
     const incrementSleepTime = function incrementSleepTime() {
       if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { game.animal.sleep() };
-      console.log(game.animal.sleepiness);
     };
     
     const $messages = $("#messages");
@@ -259,9 +265,12 @@ const game = {
           const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
           $animalImage.attr("src", adultImage); 
         } else if (game.animal.age === 10) {
-          $("#messages").text(`${game.animal.name} has fully grown and is being sent to a loving barn!`);
+          $("#messages").text(`${game.animal.name} has fully grown, send them off to a loving barn!`);
           const grownImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
           $animalImage.attr("src", grownImage); 
+
+          $animalImage.on("click", game.setUpSuccess);
+
         }
       } else {
         $age.text("Age: 0");
@@ -284,23 +293,22 @@ const game = {
       $sleepiness.width(decreaseSleepiness);
       $sleepiness.css("max-width", "100%");
 
-      //TODO -- add the death screen in else statements
       if (game.animal.hunger > 0) { 
         game.animal.hunger -= 1; 
       } else if (game.animal.hunger === 0) {
-        console.log("died.");
+        death();
       }
       
       if (game.animal.sleepiness > 0) { 
         game.animal.sleepiness -= 1; 
       } else if (game.animal.sleepiness === 0){
-        console.log("died.");
+        death();
       }
 
       if (game.animal.happiness > 0) {
          game.animal.happiness -= 1; 
       } else if (game.animal.happiness === 0){
-        console.log("died.");
+        death();
       }
     };
 
@@ -349,8 +357,6 @@ const game = {
       }
     };
     
-
-
     // Buttons
     const $buttonDiv = $(`#buttonDiv`);
     const $feed = $(`<button id="feed" class="buttons rpgui-button golden"><p>Feed</p></button>`);
@@ -359,6 +365,21 @@ const game = {
     $buttonDiv.append($cuddle);
     const $sleep = $(`<button id="sleep" class="buttons rpgui-button golden"><p>Sleep</p></button>`);
     $buttonDiv.append($sleep);
+
+    const death = function death() {
+      if (game.animal.hunger === 0 || game.animal.happiness === 0 || game.animal.sleepiness === 0){
+        clearInterval(game.aliveTimer);
+        clearInterval(game.sleepTimer);
+        
+        $animalImage.attr("src","Images/end/ghost_walk_down.gif");
+        $animalImage.attr("id", "ghost");
+        $messages.text(`Oh no! ${game.animal.name} has passed away. Please send them off in peace`);
+        
+        /* --- Event Listeners --- */
+        $animalImage.off("click", pet);
+        $animalImage.on("click", game.setUpGameOver);
+      }
+    };
 
     /* --- Event Listeners --- */
 
@@ -370,8 +391,8 @@ const game = {
 
   },
 
-// TODO -- game over screen
   setUpGameOver () {
+    game.hideMeters();
     const $inside = $("#inside");
     $("#gameScreen").remove();
 
@@ -397,19 +418,20 @@ const game = {
     );
   },
 
-//FIXME Need to make the animal object so that it can read the type
   setUpSuccess () {
+    game.hideMeters();
     const $inside = $("#inside");
     $("#gameScreen").remove();
 
     const $endScreen = $(`<section id="endScreen"></section>`);
     $inside.append($endScreen);
 
-    const $end = $(`<h2 id="end">YOU WIN!<img id="yourAnimal"></h2><hr id="hrG" class="golden" />`);
-    // const successPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
-    // $animalImage.attr("src", successPic); 
+    const $end = $(`<h2 id="end">YOU WIN!<img src="" id="yourAnimal"></h2><hr id="hrG" class="golden" />`);
     $endScreen.append($end);
-    $("#yourAnimal").attr("src", "Images/animals/adult/pig_light/pig_light_heart.gif");
+    const successPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[2] + ".gif";
+    const $animalImage = $("#yourAnimal");
+    $animalImage.attr("src", successPic); 
+    //$("#yourAnimal").attr("src", "Images/animals/adult/pig_light/pig_light_heart.gif");
 
     const $resetDiv = $('<div id="resetDiv"></div>');
     $endScreen.append($resetDiv);
@@ -418,9 +440,10 @@ const game = {
     
     /* --- Event Listeners --- */
     $end.on("click", () => {
-      // const newPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
-      //($"#yourAnimal").attr("src", newPic);
-      $("#yourAnimal").attr("src", "Images/end/end_house.gif");
+      const newPic = "Images/end/end_house.gif";
+      $("#yourAnimal").attr("src", newPic);
+      //$("#yourAnimal").attr("src", "Images/end/end_house.gif");
+      //Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif
     });
 
     $("#reset").on("click", () => {
@@ -428,12 +451,6 @@ const game = {
       game.setUpStart()}
     );
   },
-
-// TODO -- reset game function
-  resetGame() {
-
-  },
-
 }
 
 // Animal Class

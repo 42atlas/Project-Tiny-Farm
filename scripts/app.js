@@ -11,22 +11,6 @@ console.log(
   "background-color:lavender; color:white;",
 );
 
-/* --- User Stories --- */
-
-//1. When the user loads the game, they are greeted with a start menu with music playing in the background (insert a mute button), that shows the start button
-
-//2. When the user presses the start button, the game screen transitions into a screen asking for the user to choose one of six farm animals by clicking on their associated picture (chicken, bunny, cow, goat, sheep, pig). Upon clicked, the animal's icon will light up and the user must enter a name for the animal in an input-field. The user must enter a valid name (not empty string) for the confirm button to work and bring them to the game screen.
-
-//3. After submitting, the screen will transition to the game screen showcasing revealing the baby animal who is sleeping. The user may wake the animal by clicking on the image of it. The timer on the message section will show time kept alive and start counting up, the age of the animal will start at 0 and increment over time as well. 
-
-//4. Upon reveal, the hunger, happiness, and sleepiness meters of the animal appears along with 3 new buttons on the bottom of the screen (feed, cuddle, and sleep). The meters begin to decrease by different rates and the user must interact with the buttons in order to feed, cuddle, and make the animal go to sleep. When the buttons are pressed, the corresponding metric to the actionable button will increase depending on the type of animal.
-
-//5. As the time passes and the animal will be animated across the screen, moving left and right. While the animal is still alive, the animal will start growing (two stages: baby -> adult), 5 mins of being kept alive the animal will grow to full adult size.
-
-//6. If animal is kept alive in adult size for more 5 mins (total game time and time kept alive = 10 minutes), then the game will be over and the animal will be sent to a loving barn, so the player gets the Game Over - Successful screen and can choose to raise another animal by pressing the reset game button.
-
-//7. At any point if the hunger, sleep, or happiness, meter reaches 0, the animal passes away and the Game over - RIP screen appears where the player can press the reset game button to reset the entire game from the beginning.
-
 
 /* === Variables === */
 
@@ -47,6 +31,8 @@ const game = {
   },
 
   setUpStart() {
+    $("#endScreen").remove();
+
     const $inside = $("#inside");
     const $startScreen = $(`<section id="startScreen"></section>`);
     $inside.append($startScreen);
@@ -373,7 +359,7 @@ const game = {
         
         $animalImage.attr("src","Images/end/ghost_walk_down.gif");
         $animalImage.attr("id", "ghost");
-        $messages.text(`Oh no! ${game.animal.name} has passed away. Please send them off in peace`);
+        $messages.text(`Oh no! ${game.animal.name} has passed away. Please send them off in peace.`);
         
         /* --- Event Listeners --- */
         $animalImage.off("click", pet);
@@ -395,6 +381,8 @@ const game = {
     game.hideMeters();
     const $inside = $("#inside");
     $("#gameScreen").remove();
+    $("#buttonDiv").empty();
+    
 
     const $endScreen = $(`<section id="endScreen"></section>`);
     $inside.append($endScreen);
@@ -406,6 +394,7 @@ const game = {
     $endScreen.append($resetDiv);
     const $reset = $(`<button id="reset" class="rpgui-button" type="button"><p>Reset Game</p></button>`);
     $resetDiv.append($reset);
+
     
     /* --- Event Listeners --- */
     $end.on("click", () => {
@@ -422,6 +411,7 @@ const game = {
     game.hideMeters();
     const $inside = $("#inside");
     $("#gameScreen").remove();
+    $("#buttonDiv").empty();
 
     const $endScreen = $(`<section id="endScreen"></section>`);
     $inside.append($endScreen);

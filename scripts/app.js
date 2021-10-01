@@ -260,11 +260,11 @@ const game = {
     const updateAge = function updateAge() {
       if (game.animal.age > 1) {
         $age.text(`Age: ${Math.floor(game.animal.age)}`);
-        if (game.animal.age === 5) {
+        if (game.animal.age === 3) {
           $("#messages").text(`${game.animal.name} has reached adulthood!`);
           const adultImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[1] + ".gif";
           $animalImage.attr("src", adultImage); 
-        } else if (game.animal.age === 10) {
+        } else if (game.animal.age === 5) {
           $("#messages").text(`${game.animal.name} has fully grown, send them off to a loving barn!`);
           const grownImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
           $animalImage.attr("src", grownImage); 
@@ -317,11 +317,11 @@ const game = {
       
       if (game.animal.hunger > 0 && game.animal.hunger < 100) { game.animal.eat(); }
 
-      if (game.animal.age > 5) {
+      if (game.animal.age > 3) {
         $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
         const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[4] + ".gif";
         $animalImage.attr("src", imageFile); 
-      } else if (game.animal.age < 5) {
+      } else if (game.animal.age < 3) {
         $("#messages").text(`You fed ${game.animal.name}, they are less hungry now.`);
         const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[4] + ".gif";
         $animalImage.attr("src", imageFile); 
@@ -332,11 +332,11 @@ const game = {
       clearInterval(game.sleepTimer);
       if (game.animal.happiness > 0 && game.animal.happiness < 100) { game.animal.cuddle(); }
 
-      if (game.animal.age > 5) {
+      if (game.animal.age > 3) {
         $("#messages").text(`You cuddled ${game.animal.name}, look at how happy it is!`);
         const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
         $animalImage.attr("src", imageFile); 
-      } else if (game.animal.age < 5) {
+      } else if (game.animal.age < 3) {
         $("#messages").text(`You cuddled ${game.animal.name}, look at how happy it is!`);
         const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
         $animalImage.attr("src", imageFile); 
@@ -346,11 +346,11 @@ const game = {
     const fixSleepiness = function fixSleepiness(){
       if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { startSleepTimer()}
 
-      if (game.animal.age > 5) {
+      if (game.animal.age > 3) {
         $("#messages").text(`Shh... ${game.animal.name} is sleeping right now.`);
         const imageFile = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
         $animalImage.attr("src", imageFile); 
-      } else if (game.animal.age < 5) {
+      } else if (game.animal.age < 3) {
         $("#messages").text(`Shh... ${game.animal.name} is sleeping right now.`);
         const imageFile = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[0] + ".gif";
         $animalImage.attr("src", imageFile); 

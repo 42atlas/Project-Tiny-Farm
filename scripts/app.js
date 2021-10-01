@@ -421,7 +421,6 @@ const game = {
     const successPic = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[2] + ".gif";
     const $animalImage = $("#yourAnimal");
     $animalImage.attr("src", successPic); 
-    //$("#yourAnimal").attr("src", "Images/animals/adult/pig_light/pig_light_heart.gif");
 
     const $resetDiv = $('<div id="resetDiv"></div>');
     $endScreen.append($resetDiv);
@@ -432,8 +431,6 @@ const game = {
     $end.on("click", () => {
       const newPic = "Images/end/end_house.gif";
       $("#yourAnimal").attr("src", newPic);
-      //$("#yourAnimal").attr("src", "Images/end/end_house.gif");
-      //Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif
     });
 
     $("#reset").on("click", () => {
@@ -639,7 +636,7 @@ const randomizeColor = function randomizeColor() {
 
 
 const sayHello = function sayHello(event){
-  console.log("Hi");
+  console.log("Hi, my name is Kathy Wu, feel free to message me @kathyswu!");
 };
 
 
@@ -649,4 +646,6 @@ const sayHello = function sayHello(event){
 $(window).on("load", game.hideMeters);
 
 $(window).on("load", game.setUpStart);
+
+$("h6").on("click", sayHello);
 

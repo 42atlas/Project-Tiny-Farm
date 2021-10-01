@@ -68,12 +68,13 @@ The current features:
 
 ## Project Status
 > <h4> <strong>Complete</strong></h4>
+* Link to [presentation](https://docs.google.com/presentation/d/1YKgK20nHuoWfF-yKCsRGYPQ4izXKmx26RI6OQjEAmXE/edit#slide=id.gf00c15a6b2_0_40)
 
 
 ## Room for Improvement
 
 Room for improvement:
-- DRY code
+- DRY code!!
 - Clean up CSS
 - Better form validation on name input
 
@@ -82,6 +83,7 @@ To do:
 - Introduce scoring functionality
 - Have barn where animals are sent to successfully add points to score
 - Add sound effects and music
+- Add birthing feature using classes
 
 <hr>
 

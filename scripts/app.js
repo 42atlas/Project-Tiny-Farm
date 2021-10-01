@@ -54,7 +54,7 @@ const game = {
     const $menuScreen = $(`<section id="menuScreen"></section>`);
     $inside.append($menuScreen);
     
-    const $choose= $(`<h3>Choose your animal: </h4>`);
+    const $choose= $(`<h3>Choose your animal: </h3>`);
     $menuScreen.append($choose);
     
     const $animalsDiv = $(`<article id="animalsDiv"></article>`);
@@ -208,17 +208,25 @@ const game = {
     startSleepTimer();
     $messages.text(`${game.animal.name} is falling asleep, try tapping it awake!`);
     
-    const $timeAlive = $(`<h5 id="timeAlive">Time alive: ${game.time}:00 </h5>`);
+    const $timeAlive = $(`<h4 id="timeAlive">Time alive: ${game.time}:00 </h4>`);
     $("#content").append($timeAlive);
-    const $age = $(`<h5 id="age">Age: ${game.animal.age}</h5>`);
+    const $age = $(`<h4 id="age">Age: ${game.animal.age}</h4>`);
     $("#content").append($age);
     
     const pet = function pet() {
       clearInterval(game.sleepTimer);
-      const fileName = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
-      $animalImage.attr("src", fileName);
-      $messages.text(`You pet ${game.animal.name}, it seems ${game.animal.name} likes you!`);
-      game.animal.happiness++;
+      if (game.animal.age > 3) {
+          const fileAdult = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+          $animalImage.attr("src", fileAdult);
+          $messages.text(`You pet ${game.animal.name}, it seems ${game.animal.name} likes you!`);
+          game.animal.happiness++;
+      } else if (game.animal.age < 3) {
+          const fileName = "Images/animals/baby/" + game.animal.type + "_" + game.animal.color + "/baby" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
+          $animalImage.attr("src", fileName);
+          $messages.text(`You pet ${game.animal.name}, it seems ${game.animal.name} likes you!`);
+          game.animal.happiness++;
+      }
+  
     };
 
     
@@ -382,6 +390,10 @@ const game = {
     const $inside = $("#inside");
     $("#gameScreen").remove();
     $("#buttonDiv").empty();
+
+    clearInterval(game.aliveTimer);
+    clearInterval(game.sleepTimer);
+    game.time = 0;
     
 
     const $endScreen = $(`<section id="endScreen"></section>`);
@@ -412,6 +424,10 @@ const game = {
     const $inside = $("#inside");
     $("#gameScreen").remove();
     $("#buttonDiv").empty();
+
+    clearInterval(game.aliveTimer);
+    clearInterval(game.sleepTimer);
+    game.time = 0;
 
     const $endScreen = $(`<section id="endScreen"></section>`);
     $inside.append($endScreen);

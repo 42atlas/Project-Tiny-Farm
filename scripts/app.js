@@ -74,7 +74,9 @@ const game = {
     const $bunny = $(`<img src="Images/title/bunny_white/babybunny_walk_left.gif" class="animals"  id="bunny">`);
     $animalsDiv.append($bunny);
     
-    const animalsArray = [$goatkid, $lamb, $piglet, $cow, $chick, $bunny];
+    const animalsArray = [$(`<img src="Images/title/goat_kid/goat_halfbrown_walk_left.gif" class="animals"  id="goat">`), $lamb, $piglet, $cow, $chick, $bunny];
+
+   
 
     //Name and confirm
     const $nameDiv = $(`<article id="nameDiv"></article>`);
@@ -93,6 +95,8 @@ const game = {
           animalsArray[i].removeClass("selected");
         } 
       }
+
+      
       
       const $animal = $(event.target);
       const type = $animal.attr("id");
@@ -101,6 +105,12 @@ const game = {
       
       return game.animalType = type;
     };
+
+     // NOTE add event listener dynamically 
+    // animalsArray.forEach(animal => {
+    //     $animalsDiv.append(animal);
+    //         animal.on("click", updateType);
+    //   });
 
     const checkName = function checkName (){
       
@@ -118,12 +128,13 @@ const game = {
         game.setUpGame();
       }
     };
-    $("#name").on("change", () => {
-      $("#prompt").css("color", "white");
-      $("#prompt").text("Give it a name:");
-      $("#name").css("border", "0");
-      $("#name").css("box-shadow", "0 0 1px dimgray");
-    });
+
+      $("#name").on("change", () => {
+        $("#prompt").css("color", "white");
+        $("#prompt").text("Give it a name:");
+        $("#name").css("border", "0");
+        $("#name").css("box-shadow", "0 0 1px dimgray");
+      });
 
     const generateAnimal = function generateAnimal(event) {
      
@@ -226,10 +237,8 @@ const game = {
           $messages.text(`You pet ${game.animal.name}, it seems ${game.animal.name} likes you!`);
           game.animal.happiness++;
       }
-  
     };
 
-    
     const startAliveTimer = function startAliveTimer() {
       game.aliveTimer = setInterval(incrementTime, 1000);
     };
@@ -338,7 +347,7 @@ const game = {
     };
 
     const fixSleepiness = function fixSleepiness(){
-      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { startSleepTimer()}
+      if (game.animal.sleepiness > 0 && game.animal.sleepiness < 100) { startSleepTimer(); }
 
       if (game.animal.age > 3) {
         $("#messages").text(`Shh... ${game.animal.name} is sleeping right now.`);

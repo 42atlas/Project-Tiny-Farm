@@ -12,8 +12,7 @@ console.log(
 );
 
 
-/* === Variables === */
-
+/* === VARIABLES === */
 
 const game = {
   /* --- Game Values --- */
@@ -74,9 +73,7 @@ const game = {
     const $bunny = $(`<img src="Images/title/bunny_white/babybunny_walk_left.gif" class="animals"  id="bunny">`);
     $animalsDiv.append($bunny);
     
-    const animalsArray = [$(`<img src="Images/title/goat_kid/goat_halfbrown_walk_left.gif" class="animals"  id="goat">`), $lamb, $piglet, $cow, $chick, $bunny];
-
-   
+    const animalsArray = [$goatkid, $lamb, $piglet, $cow, $chick, $bunny];
 
     //Name and confirm
     const $nameDiv = $(`<article id="nameDiv"></article>`);
@@ -86,7 +83,6 @@ const game = {
     const $confirm = $(`<button id="confirm" class="rpgui-button" type="button"><p>OK</p></button>`);
     $nameDiv.append($confirm);
   
-    
     // Update the type and add CSS selected style to show player selected one animal type
     const updateType = function updateType(event) {
       
@@ -95,9 +91,6 @@ const game = {
           animalsArray[i].removeClass("selected");
         } 
       }
-
-      
-      
       const $animal = $(event.target);
       const type = $animal.attr("id");
       
@@ -271,9 +264,10 @@ const game = {
           $("#messages").text(`${game.animal.name} has fully grown, send them off to a loving barn!`);
           const grownImage = "Images/animals/adult/" + game.animal.type + "_" + game.animal.color + "/" + game.animal.type + "_" + game.animal.color + "_" + game.animal.animation[5] + ".gif";
           $animalImage.attr("src", grownImage); 
+          clearInterval(game.sleepTimer);
+          clearInterval(game.aliveTimer);
 
           $animalImage.on("click", game.setUpSuccess);
-
         }
       } else {
         $age.text("Age: 0");
@@ -373,7 +367,9 @@ const game = {
       if (game.animal.hunger === 0 || game.animal.happiness === 0 || game.animal.sleepiness === 0){
         clearInterval(game.aliveTimer);
         clearInterval(game.sleepTimer);
-        
+        game.aliveTimer = 0;
+        game.sleepTimer = 0;
+
         $animalImage.attr("src","Images/end/ghost_walk_down.gif");
         $animalImage.attr("id", "ghost");
         $messages.text(`Oh no! ${game.animal.name} has passed away. Please send them off in peace.`);
@@ -464,6 +460,8 @@ const game = {
     );
   },
 }
+
+/* === CLASSES === */
 
 // Animal Class
 class Animal {
